@@ -2,7 +2,7 @@ Welcome to the GitHub repository for the VEX EXP robots! This repository contain
 
 ## What is VEX EXP?
 
-VEX EXP (Education Platform) is a platform for students to design, build, and program robots using the VEX EXP kit. The kit includes various components such as motors, sensors, and a microcontroller that allows the robot to be controlled using code.
+VEX EXP is a platform for students to design, build, and program robots using the VEX EXP kit. The kit includes various components such as motors, sensors, and a microcontroller that allows the robot to be controlled using code.
 
 ## Getting Started
 
