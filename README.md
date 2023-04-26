@@ -26,4 +26,4 @@ We welcome contributions to this repository from the VEX EXP community. If you w
 
 ## License
 
-This repository is licensed under the MIT License.
+This project is licensed under the GNU General Public License.
