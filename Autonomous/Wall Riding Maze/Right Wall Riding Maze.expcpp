@@ -36,7 +36,7 @@ motor rightMotorB = motor(PORT5, true);
 motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
 smartdrive Drivetrain = smartdrive(LeftDriveSmart, RightDriveSmart, BrainInertial, 219.44, 320, 40, mm, 1);
 
-distance LeftDistance = distance(PORT7);
+distance RightDistance = distance(PORT7);
 bumper FrontBumper = bumper(Brain.ThreeWirePort.A);
 
 void calibrateDrivetrain() {
