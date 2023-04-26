@@ -1,0 +1,125 @@
+#pragma region VEXcode Generated Robot Configuration
+// Make sure all required headers are included.
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <math.h>
+#include <string.h>
+
+
+#include "vex.h"
+
+using namespace vex;
+
+// Brain should be defined by default
+brain Brain;
+
+
+// START EXP MACROS
+#define waitUntil(condition)                                                   \
+  do {                                                                         \
+    wait(5, msec);                                                             \
+  } while (!(condition))
+
+#define repeat(iterations)                                                     \
+  for (int iterator = 0; iterator < iterations; iterator++)
+// END EXP MACROS
+
+
+// Robot configuration code.
+inertial BrainInertial = inertial();
+controller Controller = controller();
+motor Left = motor(PORT1, false);
+
+motor Front = motor(PORT3, false);
+
+motor Right = motor(PORT5, true);
+
+motor Back = motor(PORT8, true);
+
+
+
+
+// define variable for remote controller enable/disable
+bool RemoteControlCodeEnabled = true;
+#pragma endregion VEXcode Generated Robot Configuration
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*    Module:       main.cpp                                                  */
+/*    Author:       FiveSixEP                                                 */
+/*    Created:      4/1/23                                                    */
+/*    Description:  Field Oriented X Drive                                    */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+// Include the VEX Library
+#include "vex.h"
+  
+// Allows for easier use of the VEX Library
+using namespace vex;
+
+double axisLR, axisFB, axisRot, leftMotor, leftPower, rightMotor, rightPower, frontMotor, frontPower, backMotor, backPower, wheelAngle, velocityFB, velocityLR, minValue, maxValue, normFactor;
+
+
+int main() 
+{
+
+  // Main Drive
+  while(true) 
+  {
+    
+    // Main Driving Calculation
+    wheelAngle = 45 * (3.14159/180);
+    
+    // Get joysticks
+    axisFB = Controller.Axis3.position();
+    axisLR = Controller.Axis4.position();
+    axisRot = Controller.Axis1.position();
+
+    // Calculate robot velocity for 2 axes
+    velocityFB = cos(wheelAngle)*axisFB + sin(wheelAngle)*axisLR; velocityLR = cos(wheelAngle)*axisLR - sin(wheelAngle)*axisFB;}
+
+    // Calculate each motor velocity with 3 axes
+    leftMotor = velocityFB+axisRot;
+    rightMotor = velocityFB-axisRot;
+    frontMotor = velocityLR+axisRot;
+    backMotor = velocityLR-axisRot;
+
+    // Normalize to within range -1 to 1
+    if (leftMotor > 1 || rightMotor > 1 || frontMotor > 1 || backMotor > 1 || leftMotor < -1 || rightMotor < -1 || frontMotor < -1 || backMotor < -1)
+    {
+      if (leftMotor > 0) {maxValue = leftMotor;} 
+      else {maxValue = -leftMotor;}
+
+      if (rightMotor > maxValue) {maxValue = rightMotor;} 
+      else if (rightMotor < -maxValue) {maxValue = -rightMotor;}
+
+      if (frontMotor > maxValue) {maxValue = frontMotor;} 
+      else if (frontMotor < -maxValue) {maxValue = -frontMotor;}
+
+      if (backMotor > maxValue) {maxValue = backMotor;} 
+      else if (backMotor < -maxValue) {maxValue = -backMotor;}
+
+      normFactor = 1 / maxValue;
+
+      // Convert to percentage value
+      leftPower = leftMotor * normFactor * 100;
+      rightPower = rightMotor * normFactor * 100;
+      frontPower = frontMotor * normFactor * 100;
+      backPower = backMotor * normFactor * 100;
+    }
+
+    // Set speeds for each motor
+    Left.spin(forward);
+    Right.spin(forward);
+    Front.spin(forward);
+    Back.spin(forward);
+    Left.setVelocity(leftMotor, percent);
+    Right.setVelocity(rightMotor, percent);
+    Front.setVelocity(frontMotor,percent);
+    Back.setVelocity(backMotor,percent);
+
+    wait(5,msec);
+  };
+  return 0;
+}
